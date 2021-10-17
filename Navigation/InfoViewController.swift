@@ -8,16 +8,19 @@
 import UIKit
 
 class InfoViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .white
         createPostButton()
+        title = "Info"
     }
     
     func createPostButton(){
-        let button = UIButton(frame: CGRect(x: (view.bounds.width / 2)-50, y: view.bounds.height / 2, width: 100, height: 50))
+        let button = UIButton(frame: CGRect(x: (view.bounds.width / 2)-50,
+                                            y: view.bounds.height / 2,
+                                            width: 100, height: 50))
         button.backgroundColor = .systemRed
         button.setTitle("Alert", for: .normal)
         button.addTarget(self, action: #selector(pressedAlertButton), for: .touchUpInside)
@@ -25,9 +28,9 @@ class InfoViewController: UIViewController {
         
     }
     
-
+    
     @objc func pressedAlertButton (){
-        let alertVC = UIAlertController(title: "Внимание", message: "Заданное сообщение", preferredStyle: .alert)
+        let alertVC = UIAlertController(title: "Внимание", message: "Выберите действие", preferredStyle: .alert)
         let button1 = UIAlertAction(title: "Первое сообщение", style: .default){ _ in
             print("Первое сообщение")
         }
@@ -44,5 +47,5 @@ class InfoViewController: UIViewController {
         
         
     }
-
+    
 }

@@ -12,12 +12,13 @@ class PostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         if let post = curentPost {
             title = post.title
             view.backgroundColor = .lightGray
         }
         configureBarButton()
+        
     }
     
     func configureBarButton() {
@@ -27,11 +28,11 @@ class PostViewController: UIViewController {
         navigationItem.rightBarButtonItem = infoBarButton
     }
     
-
+    
     @objc func infoVCModal() {
-       let vc = InfoViewController()
+        let vc = InfoViewController()
         vc.modalPresentationStyle = .formSheet
         present(vc, animated: true, completion: nil)
     }
-
+    
 }

@@ -11,24 +11,25 @@ class ProfileViewController: UIViewController {
     init(){
         super.init(nibName: nil, bundle: nil)
         configureTabBarItem()
-      
+        
     }
     
     required init(coder aDecoder: NSCoder) {
-            fatalError("NSCoding not supported")
-        }
-
+        fatalError("NSCoding not supported")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .green
+        
+        view.backgroundColor = .systemCyan
+        title = "Profile"
     }
     
     func configureTabBarItem() {
         tabBarItem.title = "Profile"
         tabBarItem.image = UIImage(systemName: "person")
         tabBarItem.selectedImage = UIImage(systemName: "person.fill")
-        tabBarItem.tag = 1
+        tabBarItem.tag = 20
     }
-
+    
 }
