@@ -14,6 +14,12 @@ class ProfileViewController: UIViewController {
         return headerView
     }()
     
+    let anotherButton: UIButton = {
+        let button = StatusButton(frame: .zero)
+        button.configure(with: "Another button")
+        return button
+    }()
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         configureTabBarItem()
@@ -30,10 +36,10 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .white
         title = tabBarItem.title
         view.addSubview(profileHeaderView)
+        view.addSubview(anotherButton)
         
-        profileHeaderView.statusButton.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)
-        
-        profileHeaderView.statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+       profileHeaderView.statusButton.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)        
+       profileHeaderView.statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
     }
     
     override func viewWillLayoutSubviews() {
@@ -41,10 +47,14 @@ class ProfileViewController: UIViewController {
     }
     
     func setupLayout() {
-        profileHeaderView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         profileHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        profileHeaderView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        profileHeaderView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        profileHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        profileHeaderView.heightAnchor.constraint(equalToConstant: 220).isActive = true
+        
+        anotherButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        anotherButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        anotherButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
     func configureTabBarItem() {
