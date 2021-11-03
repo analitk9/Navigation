@@ -13,6 +13,8 @@ class ProfileHeaderView: UIView {
         static let avatarViewSideSize: CGFloat = 110
         static let statusButtonHeight: CGFloat = 50
         static let statusTextFieldHeight: CGFloat = 40
+        static let statusTextFieldHeightPadding: CGFloat = 34
+        
     }
     
     var statusText: String?
@@ -32,7 +34,7 @@ class ProfileHeaderView: UIView {
      
     let statusButton: UIButton = {
         let button = StatusButton(frame: .zero)
-        button.configure()
+        button.configure(with: "Show status")
         return button
     }()
     
@@ -90,7 +92,7 @@ class ProfileHeaderView: UIView {
             statusButton.heightAnchor.constraint(equalToConstant: Constans.statusButtonHeight),
             statusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constans.padding),
             statusButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constans.padding),
-            statusButton.topAnchor.constraint(equalTo: profileAvatarView.bottomAnchor, constant: Constans.statusButtonHeight)
+            statusButton.topAnchor.constraint(equalTo: profileAvatarView.bottomAnchor, constant: Constans.padding * 2)
         ]
         
         let profileNameLabelConstraint: [NSLayoutConstraint] = [
@@ -107,7 +109,7 @@ class ProfileHeaderView: UIView {
             statusTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constans.padding),
             statusTextField.topAnchor.constraint(equalTo: statusTextLabel.bottomAnchor, constant: Constans.padding),
             statusTextField.leadingAnchor.constraint(equalTo: statusTextLabel.leadingAnchor),
-            statusTextField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -Constans.statusTextFieldHeight)
+            statusTextField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -Constans.statusTextFieldHeightPadding)
         ]
         
         NSLayoutConstraint.activate( profileAvatarViewConstraint +

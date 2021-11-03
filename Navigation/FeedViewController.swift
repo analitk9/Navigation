@@ -11,6 +11,14 @@ class FeedViewController: UIViewController {
     
     var post: Post
     
+    let stack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
     init(){
         post = Post(title: "Новая Новость!")
         super.init(nibName: nil, bundle: nil)
@@ -22,48 +30,44 @@ class FeedViewController: UIViewController {
         fatalError("NSCoding not supported")
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .yellow
+        view.backgroundColor = .white
         title = "Feed"
-        createPostButton()
+        view.addSubview(stack)
+        configureStack()
         
     }
-    func createPostButton(){
-        let button = UIButton()
-        button.backgroundColor = .systemRed
-        button.layer.cornerRadius = button.frame.width / 2
-        button.setTitle("post", for: .normal)
-        button.addTarget(self, action: #selector(pushToPostVC), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(button)
-        
-        makeUI(button)
-        
+
+    func configureStack(){
+        let _ =  ["Кнопка 1","Кнопка 2"].map { [weak self] txt in
+            let but = StatusButton()
+            but.configure(with: txt)
+            but.addTarget(self, action: #selector(pushToPostVC), for: .touchUpInside)
+            self?.stack.addArrangedSubview(but)
+        }
     }
     
-    func makeUI(_ button: UIButton){
-        NSLayoutConstraint.activate([
-            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-        button.widthAnchor.constraint(equalToConstant: 150).isActive = true
+    override func viewWillLayoutSubviews() {
+        setupLayout()
     }
+    
+    func setupLayout(){
+        stack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stack.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
+    
     func configureTabBarItem() {
         
         tabBarItem.title = "Feed"
         tabBarItem.image = UIImage(systemName: "newspaper.circle")
         tabBarItem.selectedImage = UIImage(systemName: "newspaper.circle.fill")
-        
         tabBarItem.tag = 10
         
     }
     
     @objc func pushToPostVC() {
         let postVC = PostViewController()
-        
         postVC.curentPost = post
         navigationController?.pushViewController(postVC, animated: true)
         

@@ -16,11 +16,12 @@ class StatusButton: UIButton {
         static let shadowOffset: CGSize = CGSize(width: 4, height: 4)
         static let shadowColor: CGColor = UIColor.black.cgColor
     }
-    func configure() {
+    func configure(with nameButton: String) {
         translatesAutoresizingMaskIntoConstraints = false
-        setTitle("Show status", for: .normal)
+        setTitle(nameButton, for: .normal)
         backgroundColor = Constans.backgroundColor
         tintColor = Constans.tintColor
+
         layer.cornerRadius = Constans.cornerRadius
         layer.shadowOffset = Constans.shadowOffset
         layer.shadowColor  = Constans.shadowColor
@@ -28,11 +29,13 @@ class StatusButton: UIButton {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
         layer.shadowOffset = CGSize.zero
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
         layer.shadowOffset = Constans.shadowOffset
     }
-
+    
 }
