@@ -9,7 +9,7 @@ import UIKit
 
 class FeedViewController: UIViewController {
     
-    var post: Post
+   // var post: Post
     
     let stack: UIStackView = {
         let stack = UIStackView()
@@ -20,7 +20,7 @@ class FeedViewController: UIViewController {
     }()
     
     init(){
-        post = Post(title: "Новая Новость!")
+      //  post = Post(title: "Новая Новость!")
         super.init(nibName: nil, bundle: nil)
         configureTabBarItem()
         
@@ -68,7 +68,7 @@ class FeedViewController: UIViewController {
     
     @objc func pushToPostVC() {
         let postVC = PostViewController()
-        postVC.curentPost = post
+      //  postVC.curentPost = post
         navigationController?.pushViewController(postVC, animated: true)
         
     }

@@ -1,5 +1,5 @@
 //
-//  ProfileHeaderView.swift
+//  ProfileTableHeaderView.swift
 //  Navigation
 //
 //  Created by Denis Evdokimov on 10/20/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfileHeaderView: UIView {
+class ProfileHeaderView: UITableViewHeaderFooterView {
     private enum Constans{
         static let padding: CGFloat = 16
         static let avatarViewSideSize: CGFloat = 110
@@ -58,16 +58,15 @@ class ProfileHeaderView: UIView {
         return label
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor(red: 199/255, green: 198/255, blue: 205/255, alpha: 1)
-        
-        addSubview(statusTextLabel)
-        addSubview(profileNameLabel)
-        addSubview(profileAvatarView)
-        addSubview(statusButton)
-        addSubview(statusTextField)
+    override init( reuseIdentifier: String?) {
+        super.init( reuseIdentifier: reuseIdentifier)
+    
+        contentView.addSubview(statusTextLabel)
+        contentView.addSubview(profileNameLabel)
+        contentView.addSubview(profileAvatarView)
+        contentView.addSubview(statusButton)
+        contentView.addSubview(statusTextField)
+        contentView.backgroundColor =
         
     }
     
@@ -82,22 +81,22 @@ class ProfileHeaderView: UIView {
     
     func configureLayout(){
         let profileAvatarViewConstraint: [NSLayoutConstraint] = [
-            profileAvatarView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constans.padding),
-            profileAvatarView.topAnchor.constraint(equalTo: self.topAnchor, constant: Constans.padding),
+            profileAvatarView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constans.padding),
+            profileAvatarView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constans.padding),
             profileAvatarView.widthAnchor.constraint(equalToConstant: Constans.avatarViewSideSize),
             profileAvatarView.heightAnchor.constraint(equalToConstant: Constans.avatarViewSideSize)
         ]
         
         let statusButtonConstraint: [NSLayoutConstraint] = [
             statusButton.heightAnchor.constraint(equalToConstant: Constans.statusButtonHeight),
-            statusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constans.padding),
-            statusButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constans.padding),
+            statusButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constans.padding),
+            statusButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding),
             statusButton.topAnchor.constraint(equalTo: profileAvatarView.bottomAnchor, constant: Constans.padding * 2)
         ]
         
         let profileNameLabelConstraint: [NSLayoutConstraint] = [
-            profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            profileNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: Constans.padding)
+            profileNameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            profileNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constans.padding)
         ]
         
         let statusTextLabelConstraint: [NSLayoutConstraint] = [
@@ -106,7 +105,7 @@ class ProfileHeaderView: UIView {
         
         let statusTextFieldConstraint: [NSLayoutConstraint] = [
             statusTextField.heightAnchor.constraint(equalToConstant: Constans.statusTextFieldHeight),
-            statusTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constans.padding),
+            statusTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding),
             statusTextField.topAnchor.constraint(equalTo: statusTextLabel.bottomAnchor, constant: Constans.padding),
             statusTextField.leadingAnchor.constraint(equalTo: statusTextLabel.leadingAnchor),
             statusTextField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -Constans.statusTextFieldHeightPadding)
