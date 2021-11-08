@@ -127,11 +127,5 @@ class LogInView: UIView {
             logInButton.trailingAnchor.constraint(equalTo: stack.trailingAnchor)
             
         ])
-        
-        
-        
-        
     }
-    
-
 }

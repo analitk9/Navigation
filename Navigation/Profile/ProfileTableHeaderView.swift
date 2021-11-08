@@ -8,6 +8,9 @@
 import UIKit
 
 class ProfileHeaderView: UITableViewHeaderFooterView {
+   
+    private var statusText: String?
+    
     private enum Constans{
         static let padding: CGFloat = 16
         static let avatarViewSideSize: CGFloat = 110
@@ -17,10 +20,9 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         
     }
     
-    var statusText: String?
-    
     let statusTextField: UITextField = {
         let field = StatusTextField(frame: .zero)
+       
         field.configure()
         return field
     }()
@@ -45,8 +47,6 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         label.textColor = .gray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
-        
-        
     }()
     
     let profileNameLabel: UILabel = {
@@ -61,12 +61,15 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     override init( reuseIdentifier: String?) {
         super.init( reuseIdentifier: reuseIdentifier)
     
+        statusButton.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)
+        statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+        statusTextField.delegate = self
         contentView.addSubview(statusTextLabel)
         contentView.addSubview(profileNameLabel)
         contentView.addSubview(profileAvatarView)
         contentView.addSubview(statusButton)
         contentView.addSubview(statusTextField)
-        contentView.backgroundColor =
+        contentView.backgroundColor = UIColor(red: 199/255, green: 198/255, blue: 205/255, alpha: 1)
         
     }
     
@@ -119,7 +122,26 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         
     }
     
+    @objc func statusButtonPressed(){
+
+        if let statusText = statusText {
+            statusTextLabel.text = statusText
+        }
+    }
+    
+    @objc func statusTextChanged(_ textField: UITextField) {
+     
+        statusText = textField.text
+    }
+    
     
 }
 
+extension ProfileHeaderView: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
 

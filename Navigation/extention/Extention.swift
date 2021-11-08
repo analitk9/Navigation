@@ -8,11 +8,11 @@
 import UIKit
 
 extension UIImage{
-        func withAlpha(_ a: CGFloat) -> UIImage {
-            return UIGraphicsImageRenderer(size: size, format: imageRendererFormat).image { _ in
-                draw(in: CGRect(origin: .zero, size: size), blendMode: .normal, alpha: a)
-            }
+    func withAlpha(_ a: CGFloat) -> UIImage {
+        return UIGraphicsImageRenderer(size: size, format: imageRendererFormat).image { _ in
+            draw(in: CGRect(origin: .zero, size: size), blendMode: .normal, alpha: a)
         }
+    }
 }
 extension UIColor {
     func image(_ size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
@@ -32,3 +32,8 @@ extension UITextField {
     }
     
 }
+
+
+
+
+     

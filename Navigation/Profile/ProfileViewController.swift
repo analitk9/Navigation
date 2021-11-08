@@ -8,22 +8,19 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
+   
     fileprivate enum CellReuseID: String {
         case `default` = "TableViewCellReuseIDDefault"
         case sectionHeader = "TableViewHeaderSectionID"
     }
     
     let model: [Post] = Posts.createMockData()
-    
-//    let profileHeaderView: ProfileHeaderView = {
-//        let headerView = ProfileHeaderView()
-//        return headerView
-//    }()
-    
-    
+        
     let tableView: UITableView = {
-        let table = UITableView()
+        let table = UITableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.separatorStyle = .singleLine
+        table.separatorColor = .black
         return table
     }()
     
@@ -39,7 +36,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.isHidden = false
+
         view.backgroundColor = .white
         title = tabBarItem.title
       
@@ -49,13 +46,6 @@ class ProfileViewController: UIViewController {
         view.addSubview(tableView)
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: CellReuseID.default.rawValue)
         tableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: CellReuseID.sectionHeader.rawValue)
-       
-        //  view.addSubview(profileHeaderView)
-    
-        
-      // profileHeaderView.statusButton.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)
-     //  profileHeaderView.statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        
 
     }
     
@@ -69,10 +59,6 @@ class ProfileViewController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         
-//        profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-//        profileHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-//        profileHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-//        profileHeaderView.heightAnchor.constraint(equalToConstant: 220).isActive = true
     }
     
     func configureTabBarItem() {
@@ -81,22 +67,10 @@ class ProfileViewController: UIViewController {
         tabBarItem.selectedImage = UIImage(systemName: "person.fill")
         tabBarItem.tag = 20
     }
-    
-    @objc func statusButtonPressed(){
-        print("press")
-//        if let statusText = profileHeaderView.statusText {
-//            profileHeaderView.statusTextLabel.text = statusText
-//        }
-    }
-    
-    @objc func statusTextChanged(_ textField: UITextField) {
-        print("Text editing")
-//        profileHeaderView.statusText = textField.text
-    }
-    
 }
 
 extension ProfileViewController: UITableViewDelegate{
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
     }
@@ -104,30 +78,34 @@ extension ProfileViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
             return 220
     }
-    
 }
 
 extension ProfileViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model.count
+        return  model.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let reuseID = CellReuseID.default.rawValue
-         let cell = tableView.dequeueReusableCell(withIdentifier:
-                                                    reuseID, for: indexPath) as! PostTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier:
+                                                        reuseID, for: indexPath) as? PostTableViewCell else { fatalError() }
+        
+        let post = model[indexPath.row]
+        cell.configure(post)
+
         return cell
-        
-        
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier:
-                                                                CellReuseID.sectionHeader.rawValue) as! ProfileHeaderView
-        
-        view.statusButton.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)
-        view.statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
-        
+        let reuseId = CellReuseID.sectionHeader.rawValue
+        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier:
+                                                                    reuseId) as? ProfileHeaderView else { fatalError() }
         if section == 0 {
             return view
         }
