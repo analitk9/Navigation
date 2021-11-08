@@ -25,7 +25,6 @@
 		64C15873272599500078860D /* ProfileAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C15872272599500078860D /* ProfileAvatarView.swift */; };
 		64C1587627259B870078860D /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C1587527259B870078860D /* StatusButton.swift */; };
 		64FE1D27273785EA00D2D985 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64FE1D26273785EA00D2D985 /* PostTableViewCell.swift */; };
-		64FE1D29273938EB00D2D985 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64FE1D28273938EB00D2D985 /* PaddingLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,7 +48,6 @@
 		64C15872272599500078860D /* ProfileAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAvatarView.swift; sourceTree = "<group>"; };
 		64C1587527259B870078860D /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
 		64FE1D26273785EA00D2D985 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
-		64FE1D28273938EB00D2D985 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +138,6 @@
 				64C15872272599500078860D /* ProfileAvatarView.swift */,
 				64C15870272596DF0078860D /* StatusTextField.swift */,
 				64C1587527259B870078860D /* StatusButton.swift */,
-				64FE1D28273938EB00D2D985 /* PaddingLabel.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -235,7 +232,6 @@
 				64C15873272599500078860D /* ProfileAvatarView.swift in Sources */,
 				649D271127328854006F15EB /* LogInView.swift in Sources */,
 				64C15871272596DF0078860D /* StatusTextField.swift in Sources */,
-				64FE1D29273938EB00D2D985 /* PaddingLabel.swift in Sources */,
 				64FE1D27273785EA00D2D985 /* PostTableViewCell.swift in Sources */,
 				64752273271C227A00014ECF /* Post.swift in Sources */,
 				64752275271C22FA00014ECF /* InfoViewController.swift in Sources */,

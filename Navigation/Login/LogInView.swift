@@ -9,6 +9,12 @@ import UIKit
 
 class LogInView: UIView {
     
+    private enum Constans{
+        static let padding: CGFloat = 16
+        static let imageHeight: CGFloat = 100
+        static let logoInset: CGFloat = 120
+    }
+    
     let stack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -22,7 +28,7 @@ class LogInView: UIView {
     }()
 
     let logoView: UIImageView = {
-        let image = UIImageView(frame: CGRect(origin: .zero, size: CGSize(width: 100, height: 100)))
+        let image = UIImageView(frame: .zero)
         image.translatesAutoresizingMaskIntoConstraints = false
         image.clipsToBounds = true
         image.image = UIImage(named: "logo")
@@ -94,7 +100,6 @@ class LogInView: UIView {
         stack.addArrangedSubview(loginText)
         stack.addArrangedSubview(passwordText)
 
-        
         addSubview(logInButton)
 
     }
@@ -112,18 +117,18 @@ class LogInView: UIView {
     func configureLayout(){
         
         NSLayoutConstraint.activate([
-            logoView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 120),
+            logoView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: Constans.logoInset),
             logoView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            logoView.heightAnchor.constraint(equalToConstant: 100),
-            logoView.widthAnchor.constraint(equalToConstant: 100),
-            logInButton.heightAnchor.constraint(equalToConstant: 50),
-            loginText.heightAnchor.constraint(equalToConstant: 50),
-            passwordText.heightAnchor.constraint(equalToConstant: 50),
-            stack.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            stack.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: 120),
-            stack.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            logoView.heightAnchor.constraint(equalToConstant: Constans.imageHeight),
+            logoView.widthAnchor.constraint(equalToConstant: Constans.imageHeight),
+            logInButton.heightAnchor.constraint(equalToConstant: Constans.imageHeight / 2),
+            loginText.heightAnchor.constraint(equalToConstant: Constans.imageHeight / 2),
+            passwordText.heightAnchor.constraint(equalToConstant: Constans.imageHeight / 2),
+            stack.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: Constans.padding),
+            stack.topAnchor.constraint(equalTo: logoView.bottomAnchor, constant: Constans.logoInset),
+            stack.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -Constans.padding),
             logInButton.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-            logInButton.topAnchor.constraint(equalTo: stack.bottomAnchor, constant: 16),
+            logInButton.topAnchor.constraint(equalTo: stack.bottomAnchor, constant: Constans.padding),
             logInButton.trailingAnchor.constraint(equalTo: stack.trailingAnchor)
             
         ])

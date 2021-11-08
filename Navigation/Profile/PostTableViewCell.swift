@@ -8,6 +8,9 @@
 import UIKit
 
 class PostTableViewCell: UITableViewCell {
+    private enum Constans{
+        static let padding: CGFloat = 16
+    }
     
     private lazy var titleTextLabel: UILabel = {
         let label = UILabel()
@@ -15,8 +18,6 @@ class PostTableViewCell: UITableViewCell {
         label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.textColor = .black
-       // label.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        
         return label
     }()
     
@@ -34,7 +35,6 @@ class PostTableViewCell: UITableViewCell {
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .gray
-       // label.padding = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return label
     }()
     
@@ -75,31 +75,30 @@ class PostTableViewCell: UITableViewCell {
     }
     
     func configureLayout() {
-        titleTextLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16).isActive = true
-        titleTextLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
-        titleTextLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        titleTextLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constans.padding).isActive = true
+        titleTextLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding).isActive = true
+        titleTextLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constans.padding).isActive = true
         
         postImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
         postImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
-        postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
-        postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0).isActive = true
-        postImage.topAnchor.constraint(equalTo: titleTextLabel.bottomAnchor, constant: 16).isActive = true
+        postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        postImage.topAnchor.constraint(equalTo: titleTextLabel.bottomAnchor, constant: Constans.padding).isActive = true
 
-        descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
-        descriptionLabel.topAnchor.constraint(equalTo: postImage.bottomAnchor,constant: 16).isActive = true
-        descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
+        descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding).isActive = true
+        descriptionLabel.topAnchor.constraint(equalTo: postImage.bottomAnchor,constant: Constans.padding).isActive = true
+        descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constans.padding).isActive = true
         
-        likeLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16).isActive = true
-        likeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: 16).isActive = true
-        likeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 16).isActive = true
+        likeLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constans.padding).isActive = true
+        likeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: Constans.padding).isActive = true
+        likeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: Constans.padding).isActive = true
         
-        viewsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -16).isActive = true
-        viewsLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16).isActive = true
-        viewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 16).isActive = true
+        viewsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -Constans.padding).isActive = true
+        viewsLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constans.padding).isActive = true
+        viewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: Constans.padding).isActive = true
        
     }
-    
-    
+
     override func prepareForReuse() {
         super.prepareForReuse()
         titleTextLabel.text =  nil
