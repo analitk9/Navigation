@@ -15,6 +15,7 @@ class LogInViewController: UIViewController {
     let scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.keyboardDismissMode = .onDrag
         
         return scroll
     }()
@@ -45,29 +46,37 @@ class LogInViewController: UIViewController {
             switch animation {
             case .keyboardWillShow:
                 scrollView.contentOffset = CGPoint(x: 0, y: keyboardFrame.size.height/2 )
+                scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.size.height/2, right: 0)
             case .keyboardWillHide:
                 scrollView.contentOffset = .zero
+                scrollView.scrollIndicatorInsets = .zero
             }
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print(scrollView.contentSize)
+    }
     override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         configureLayout()
     }
     
     func configureLayout(){
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
         
         loginView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         loginView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         loginView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
         loginView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-        loginView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        loginView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor).isActive = true
+        loginView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        loginView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
+
     }
     
     func configureTabBarItem() {

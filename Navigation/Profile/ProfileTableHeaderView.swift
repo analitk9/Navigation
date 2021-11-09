@@ -17,7 +17,6 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         static let statusButtonHeight: CGFloat = 50
         static let statusTextFieldHeight: CGFloat = 40
         static let statusTextFieldHeightPadding: CGFloat = 34
-        
     }
     
     let statusTextField: UITextField = {

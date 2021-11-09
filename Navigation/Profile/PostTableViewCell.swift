@@ -8,6 +8,7 @@
 import UIKit
 
 class PostTableViewCell: UITableViewCell {
+    
     private enum Constans{
         static let padding: CGFloat = 16
     }
@@ -54,6 +55,10 @@ class PostTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let myLabel = UILabel()
+    private let mySeparator = UIView()
+    
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -63,7 +68,7 @@ class PostTableViewCell: UITableViewCell {
         contentView.addSubview(likeLabel)
         contentView.addSubview(viewsLabel)
         
-      
+        separate()
     }
     
     override func layoutSubviews() {
@@ -75,30 +80,32 @@ class PostTableViewCell: UITableViewCell {
     }
     
     func configureLayout() {
-        titleTextLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constans.padding).isActive = true
-        titleTextLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding).isActive = true
-        titleTextLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constans.padding).isActive = true
-        
-        postImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
-        postImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width).isActive = true
-        postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        postImage.topAnchor.constraint(equalTo: titleTextLabel.bottomAnchor, constant: Constans.padding).isActive = true
-
-        descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding).isActive = true
-        descriptionLabel.topAnchor.constraint(equalTo: postImage.bottomAnchor,constant: Constans.padding).isActive = true
-        descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constans.padding).isActive = true
-        
-        likeLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constans.padding).isActive = true
-        likeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: Constans.padding).isActive = true
-        likeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: Constans.padding).isActive = true
-        
-        viewsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -Constans.padding).isActive = true
-        viewsLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constans.padding).isActive = true
-        viewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: Constans.padding).isActive = true
-       
+        NSLayoutConstraint.activate([
+            titleTextLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constans.padding),
+            titleTextLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: Constans.padding),
+            titleTextLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -Constans.padding),
+            
+            postImage.topAnchor.constraint(equalTo: titleTextLabel.bottomAnchor,constant: Constans.padding),
+            postImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            postImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+            postImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+            
+            descriptionLabel.topAnchor.constraint(equalTo: postImage.bottomAnchor,constant: Constans.padding),
+            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant:  Constans.padding),
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding),
+            
+            likeLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor,constant: Constans.padding),
+            likeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: Constans.padding),
+            likeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -Constans.padding),
+            
+            viewsLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constans.padding),
+            viewsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding),
+            viewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -Constans.padding)
+            
+        ])
     }
-
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         titleTextLabel.text =  nil
@@ -115,6 +122,28 @@ class PostTableViewCell: UITableViewCell {
         viewsLabel.text = "Views: \(String(post.views))"
         descriptionLabel.text = String(post.description)
         layoutSubviews()
+    }
+    
+    func separate(){
+        mySeparator.layer.borderColor = UIColor.lightGray.cgColor
+        mySeparator.layer.borderWidth = 1.0
+        mySeparator.translatesAutoresizingMaskIntoConstraints = false
+        myLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(mySeparator)
+        contentView.addSubview(myLabel)
+        
+        let views = [
+            "contentView" : contentView,
+            "label" : myLabel,
+            "separator" : mySeparator
+        ]
+        
+        var allConstraints: [NSLayoutConstraint] = []
+        allConstraints += NSLayoutConstraint.constraints(withVisualFormat:
+                                                            "V:|-[label]-[separator(2)]|", options: [], metrics: nil, views: views)
+        allConstraints += NSLayoutConstraint.constraints(withVisualFormat:
+                                                            "H:|[separator]|", options: [], metrics: nil, views: views)
+        NSLayoutConstraint.activate(allConstraints)
     }
     
 }

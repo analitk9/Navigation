@@ -19,8 +19,6 @@ class ProfileViewController: UIViewController {
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
-        table.separatorStyle = .singleLine
-        table.separatorColor = .black
         return table
     }()
     
@@ -95,21 +93,20 @@ extension ProfileViewController: UITableViewDataSource {
         let reuseID = CellReuseID.default.rawValue
         guard let cell = tableView.dequeueReusableCell(withIdentifier:
                                                         reuseID, for: indexPath) as? PostTableViewCell else { fatalError() }
-        
-        let post = model[indexPath.row]
-        cell.configure(post)
-
+    
+        cell.configure(model[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+       
         let reuseId = CellReuseID.sectionHeader.rawValue
         guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier:
                                                                     reuseId) as? ProfileHeaderView else { fatalError() }
         if section == 0 {
             return view
         }
-        return nil
+        return UIView()
     }
     
 }
