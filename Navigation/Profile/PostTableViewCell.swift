@@ -19,6 +19,7 @@ class PostTableViewCell: UITableViewCell {
         label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.textColor = .black
+       // label.backgroundColor = .lightGray
         return label
     }()
     
@@ -62,12 +63,7 @@ class PostTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        contentView.addSubview(titleTextLabel)
-        contentView.addSubview(postImage)
-        contentView.addSubview(descriptionLabel)
-        contentView.addSubview(likeLabel)
-        contentView.addSubview(viewsLabel)
-        
+        contentView.addSubviews([titleTextLabel,postImage, descriptionLabel, likeLabel, viewsLabel])
         separate()
     }
     
@@ -81,7 +77,7 @@ class PostTableViewCell: UITableViewCell {
     
     func configureLayout() {
         NSLayoutConstraint.activate([
-            titleTextLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constans.padding),
+            titleTextLabel.topAnchor.constraint(equalTo: contentView.topAnchor,constant: Constans.padding),
             titleTextLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: Constans.padding),
             titleTextLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -Constans.padding),
             
@@ -90,18 +86,18 @@ class PostTableViewCell: UITableViewCell {
             postImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             postImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
             postImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-            
+
             descriptionLabel.topAnchor.constraint(equalTo: postImage.bottomAnchor,constant: Constans.padding),
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant:  Constans.padding),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding),
-            
+
             likeLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor,constant: Constans.padding),
             likeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,constant: Constans.padding),
             likeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -Constans.padding),
-            
+
             viewsLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: Constans.padding),
             viewsLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding),
-            viewsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -Constans.padding)
+            viewsLabel.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor,constant: -Constans.padding)
             
         ])
     }

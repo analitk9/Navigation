@@ -63,11 +63,8 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         statusButton.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)
         statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         statusTextField.delegate = self
-        contentView.addSubview(statusTextLabel)
-        contentView.addSubview(profileNameLabel)
-        contentView.addSubview(profileAvatarView)
-        contentView.addSubview(statusButton)
-        contentView.addSubview(statusTextField)
+        
+        contentView.addSubviews([statusTextLabel, profileNameLabel, profileAvatarView, statusButton, statusTextField])
         contentView.backgroundColor = UIColor(red: 199/255, green: 198/255, blue: 205/255, alpha: 1)
         
     }

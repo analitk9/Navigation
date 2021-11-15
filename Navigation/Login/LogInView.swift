@@ -92,15 +92,11 @@ class LogInView: UIView {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .white
-       
-        addSubview(stack)
-        
-        addSubview(logoView)
         
         stack.addArrangedSubview(loginText)
         stack.addArrangedSubview(passwordText)
-
-        addSubview(logInButton)
+        
+        addSubviews([stack, logoView, logInButton])
 
     }
    
@@ -130,7 +126,6 @@ class LogInView: UIView {
             logInButton.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
             logInButton.topAnchor.constraint(equalTo: stack.bottomAnchor, constant: Constans.padding),
             logInButton.trailingAnchor.constraint(equalTo: stack.trailingAnchor)
-            
         ])
     }
 }

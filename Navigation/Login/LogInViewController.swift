@@ -12,6 +12,8 @@ class LogInViewController: UIViewController {
     private var keyboardHelper: KeyboardHelper?
     let loginView = LogInView()
     
+    private var activeTextField: UITextField?
+    
     let scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -45,10 +47,14 @@ class LogInViewController: UIViewController {
         keyboardHelper = KeyboardHelper { [unowned self] animation, keyboardFrame, duration in
             switch animation {
             case .keyboardWillShow:
-                scrollView.contentOffset = CGPoint(x: 0, y: keyboardFrame.size.height/2 )
-                scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.size.height/2, right: 0)
+                guard let activeTextField = activeTextField else { return }
+                let activeRect = activeTextField.convert(activeTextField.bounds, to: scrollView)
+                let keyBoardFrame = view.convert(keyboardFrame, to: view.window)
+                scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyBoardFrame.size.height, right: 0)
+                scrollView.scrollIndicatorInsets = scrollView.contentInset
+                scrollView.scrollRectToVisible(activeRect, animated: true)
             case .keyboardWillHide:
-                scrollView.contentOffset = .zero
+                scrollView.contentInset = .zero
                 scrollView.scrollIndicatorInsets = .zero
             }
         }
@@ -56,7 +62,6 @@ class LogInViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print(scrollView.contentSize)
     }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -64,19 +69,19 @@ class LogInViewController: UIViewController {
     }
     
     func configureLayout(){
-        scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        [
+        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         
-        
-        loginView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        loginView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        loginView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-        loginView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-        loginView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        loginView.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
-
+        loginView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+        loginView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+        loginView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+        loginView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+        loginView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+        loginView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+        ].forEach { $0.isActive = true }
     }
     
     func configureTabBarItem() {
@@ -100,5 +105,13 @@ extension LogInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        activeTextField = textField
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        activeTextField = nil
     }
 }
