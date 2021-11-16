@@ -12,8 +12,6 @@ class LogInViewController: UIViewController {
     private var keyboardHelper: KeyboardHelper?
     let loginView = LogInView()
     
-    private var activeTextField: UITextField?
-    
     let scrollView: UIScrollView = {
         let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -47,8 +45,7 @@ class LogInViewController: UIViewController {
         keyboardHelper = KeyboardHelper { [unowned self] animation, keyboardFrame, duration in
             switch animation {
             case .keyboardWillShow:
-                guard let activeTextField = activeTextField else { return }
-                let activeRect = activeTextField.convert(activeTextField.bounds, to: scrollView)
+                let activeRect = loginView.logInButton.convert(loginView.logInButton.bounds, to: scrollView)
                 let keyBoardFrame = view.convert(keyboardFrame, to: view.window)
                 scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyBoardFrame.size.height, right: 0)
                 scrollView.scrollIndicatorInsets = scrollView.contentInset
@@ -70,10 +67,10 @@ class LogInViewController: UIViewController {
     
     func configureLayout(){
         [
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         
         loginView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
         loginView.topAnchor.constraint(equalTo: scrollView.topAnchor),
@@ -105,13 +102,5 @@ extension LogInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        activeTextField = textField
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        activeTextField = nil
     }
 }
