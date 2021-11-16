@@ -1,5 +1,5 @@
 //
-//  ProfileHeaderView.swift
+//  ProfileTableHeaderView.swift
 //  Navigation
 //
 //  Created by Denis Evdokimov on 10/20/21.
@@ -7,20 +7,21 @@
 
 import UIKit
 
-class ProfileHeaderView: UIView {
+class ProfileHeaderView: UITableViewHeaderFooterView {
+   
+    private var statusText: String?
+    
     private enum Constans{
         static let padding: CGFloat = 16
         static let avatarViewSideSize: CGFloat = 110
         static let statusButtonHeight: CGFloat = 50
         static let statusTextFieldHeight: CGFloat = 40
         static let statusTextFieldHeightPadding: CGFloat = 34
-        
     }
-    
-    var statusText: String?
     
     let statusTextField: UITextField = {
         let field = StatusTextField(frame: .zero)
+       
         field.configure()
         return field
     }()
@@ -45,8 +46,6 @@ class ProfileHeaderView: UIView {
         label.textColor = .gray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
-        
-        
     }()
     
     let profileNameLabel: UILabel = {
@@ -58,16 +57,15 @@ class ProfileHeaderView: UIView {
         return label
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor(red: 199/255, green: 198/255, blue: 205/255, alpha: 1)
+    override init( reuseIdentifier: String?) {
+        super.init( reuseIdentifier: reuseIdentifier)
+    
+        statusButton.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)
+        statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+        statusTextField.delegate = self
         
-        addSubview(statusTextLabel)
-        addSubview(profileNameLabel)
-        addSubview(profileAvatarView)
-        addSubview(statusButton)
-        addSubview(statusTextField)
+        contentView.addSubviews([statusTextLabel, profileNameLabel, profileAvatarView, statusButton, statusTextField])
+        contentView.backgroundColor = UIColor(red: 199/255, green: 198/255, blue: 205/255, alpha: 1)
         
     }
     
@@ -82,22 +80,22 @@ class ProfileHeaderView: UIView {
     
     func configureLayout(){
         let profileAvatarViewConstraint: [NSLayoutConstraint] = [
-            profileAvatarView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constans.padding),
-            profileAvatarView.topAnchor.constraint(equalTo: self.topAnchor, constant: Constans.padding),
+            profileAvatarView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constans.padding),
+            profileAvatarView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constans.padding),
             profileAvatarView.widthAnchor.constraint(equalToConstant: Constans.avatarViewSideSize),
             profileAvatarView.heightAnchor.constraint(equalToConstant: Constans.avatarViewSideSize)
         ]
         
         let statusButtonConstraint: [NSLayoutConstraint] = [
             statusButton.heightAnchor.constraint(equalToConstant: Constans.statusButtonHeight),
-            statusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constans.padding),
-            statusButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constans.padding),
+            statusButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constans.padding),
+            statusButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding),
             statusButton.topAnchor.constraint(equalTo: profileAvatarView.bottomAnchor, constant: Constans.padding * 2)
         ]
         
         let profileNameLabelConstraint: [NSLayoutConstraint] = [
-            profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            profileNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: Constans.padding)
+            profileNameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            profileNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constans.padding)
         ]
         
         let statusTextLabelConstraint: [NSLayoutConstraint] = [
@@ -106,7 +104,7 @@ class ProfileHeaderView: UIView {
         
         let statusTextFieldConstraint: [NSLayoutConstraint] = [
             statusTextField.heightAnchor.constraint(equalToConstant: Constans.statusTextFieldHeight),
-            statusTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constans.padding),
+            statusTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constans.padding),
             statusTextField.topAnchor.constraint(equalTo: statusTextLabel.bottomAnchor, constant: Constans.padding),
             statusTextField.leadingAnchor.constraint(equalTo: statusTextLabel.leadingAnchor),
             statusTextField.bottomAnchor.constraint(equalTo: statusButton.topAnchor, constant: -Constans.statusTextFieldHeightPadding)
@@ -120,7 +118,26 @@ class ProfileHeaderView: UIView {
         
     }
     
+    @objc func statusButtonPressed(){
+
+        if let statusText = statusText {
+            statusTextLabel.text = statusText
+        }
+    }
+    
+    @objc func statusTextChanged(_ textField: UITextField) {
+     
+        statusText = textField.text
+    }
+    
     
 }
 
+extension ProfileHeaderView: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
 

@@ -19,10 +19,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         let feedVC = FeedViewController()
-        let profileVC =  ProfileViewController()
+        let loginVC =  LogInViewController()
         
         let firstNavController = UINavigationController(rootViewController: feedVC)
-        let secondNavController = UINavigationController(rootViewController: profileVC)
+        let secondNavController = UINavigationController(rootViewController: loginVC)
         
         let tbController = UITabBarController()
         tbController.setViewControllers([firstNavController,secondNavController], animated: true)

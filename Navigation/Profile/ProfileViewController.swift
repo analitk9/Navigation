@@ -8,16 +8,18 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
+   
+    fileprivate enum CellReuseID: String {
+        case `default` = "TableViewCellReuseIDDefault"
+        case sectionHeader = "TableViewHeaderSectionID"
+    }
     
-    let profileHeaderView: ProfileHeaderView = {
-        let headerView = ProfileHeaderView()
-        return headerView
-    }()
-    
-    let anotherButton: UIButton = {
-        let button = StatusButton(frame: .zero)
-        button.configure(with: "Another button")
-        return button
+    let model: [Post] = Posts.createMockData()
+        
+    let tableView: UITableView = {
+        let table = UITableView(frame: .zero, style: .grouped)
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
     }()
     
     init() {
@@ -32,29 +34,30 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = .white
         title = tabBarItem.title
-        view.addSubview(profileHeaderView)
-        view.addSubview(anotherButton)
+      
+        tableView.delegate = self
+        tableView.dataSource = self
         
-       profileHeaderView.statusButton.addTarget(self, action: #selector(statusButtonPressed), for: .touchUpInside)        
-       profileHeaderView.statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
+        view.addSubview(tableView)
+        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: CellReuseID.default.rawValue)
+        tableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: CellReuseID.sectionHeader.rawValue)
+
     }
     
     override func viewWillLayoutSubviews() {
-        setupLayout()
+        configureLayout()
     }
     
-    func setupLayout() {
-        profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        profileHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        profileHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        profileHeaderView.heightAnchor.constraint(equalToConstant: 220).isActive = true
-        
-        anotherButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        anotherButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        anotherButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+    func configureLayout() {
+        [
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+        tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+        ].forEach { $0.isActive = true }
     }
     
     func configureTabBarItem() {
@@ -63,16 +66,50 @@ class ProfileViewController: UIViewController {
         tabBarItem.selectedImage = UIImage(systemName: "person.fill")
         tabBarItem.tag = 20
     }
+}
+
+extension ProfileViewController: UITableViewDelegate{
     
-    @objc func statusButtonPressed(){
-        if let statusText = profileHeaderView.statusText {
-            profileHeaderView.statusTextLabel.text = statusText
-        }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
     
-    @objc func statusTextChanged(_ textField: UITextField) {
-        profileHeaderView.statusText = textField.text
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+            return 220
+    }
+}
+
+extension ProfileViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return  model.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let reuseID = CellReuseID.default.rawValue
+        guard let cell = tableView.dequeueReusableCell(withIdentifier:
+                                                        reuseID, for: indexPath) as? PostTableViewCell else { fatalError() }
+    
+        cell.configure(model[indexPath.row])
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+       
+        let reuseId = CellReuseID.sectionHeader.rawValue
+        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier:
+                                                                    reuseId) as? ProfileHeaderView else { fatalError() }
+        if section == 0 {
+            return view
+        }
+        return nil
     }
     
 }
+
 
