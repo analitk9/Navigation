@@ -8,6 +8,8 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
+
+    
     
     fileprivate enum CellReuseID: String {
         case `default` = "TableViewCellReuseIDDefault"
@@ -23,6 +25,8 @@ class ProfileViewController: UIViewController {
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
+    
+    var detailProfileView: DetailProfileAvatar?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -128,10 +132,12 @@ extension ProfileViewController: UITableViewDataSource {
             let reuseId = CellReuseID.sectionHeader.rawValue
             guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier:
                                                                         reuseId) as? ProfileHeaderView else { fatalError() }
+            view.tapAvatarViewDelegate = self
             return view
         }
         return nil
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
              if indexPath.section == 0 {
@@ -142,5 +148,25 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
 }
+
+extension ProfileViewController: tapAvatarViewProtocol {
+    
+
+    func tapHandler(_ gesture: UITapGestureRecognizer) {
+        guard let avatarImage = gesture.view else { return }
+        avatarImage.isHidden = true
+        detailProfileView = DetailProfileAvatar(with: avatarImage, frame: .zero)
+       
+        guard let showView = detailProfileView else {return}
+        showView.frame.size = view.frame.size
+        view.addSubview(showView)
+
+        showView.profileAvatarView.frame = avatarImage.convert(avatarImage.bounds, to: view)
+        showView.startRect = showView.profileAvatarView.frame
+        showView.avatarAnimator.startAnimation()
+        showView.buttonAnimator.startAnimation(afterDelay: 0.5)
+    }
+}
+
 
 

@@ -101,7 +101,7 @@ class PhotosTableViewCell: UITableViewCell {
     }
     
    func configureLayout(){
-       let width = (UIScreen.main.bounds.width - Constans.allOffset) / 4
+       let width = round(UIScreen.main.bounds.width - Constans.allOffset) / 4
         NSLayoutConstraint.activate([
             photoLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constans.padding),
             photoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constans.padding),

@@ -92,14 +92,12 @@ class LogInView: UIView {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .white
-        
         stack.addArrangedSubview(loginText)
         stack.addArrangedSubview(passwordText)
         
         addSubviews([stack, logoView, logInButton])
 
     }
-   
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
