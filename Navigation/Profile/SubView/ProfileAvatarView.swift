@@ -14,11 +14,11 @@ class ProfileAvatarView: UIImageView {
 
     func configure() {
         image =  UIImage(named: "cat")
-        translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
         layer.cornerRadius = frame.size.width / 2
         layer.borderColor = UIColor.white.cgColor
         layer.borderWidth = Constants.borderWidth
     }
+    
 
 }

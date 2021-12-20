@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol tapAvatarViewProtocol {
+   
+    func tapHandler(_ gesture: UITapGestureRecognizer)
+}
+
 class ProfileHeaderView: UITableViewHeaderFooterView {
    
     private var statusText: String?
@@ -26,9 +31,12 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         return field
     }()
     
+    var tapAvatarViewDelegate: tapAvatarViewProtocol?
+    
     let profileAvatarView: UIImageView = {
         let rect = CGRect(x: 0, y: 0, width: Constans.avatarViewSideSize, height: Constans.avatarViewSideSize)
         let image = ProfileAvatarView(frame: rect)
+        image.translatesAutoresizingMaskIntoConstraints = false
         image.configure()
         return image
     }()
@@ -64,8 +72,14 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         statusTextField.addTarget(self, action: #selector(statusTextChanged), for: .editingChanged)
         statusTextField.delegate = self
         
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(tapAvatar))
+        profileAvatarView.addGestureRecognizer(gesture)
+        profileAvatarView.isUserInteractionEnabled = true
+        
+        
         contentView.addSubviews([statusTextLabel, profileNameLabel, profileAvatarView, statusButton, statusTextField])
         contentView.backgroundColor = UIColor(red: 199/255, green: 198/255, blue: 205/255, alpha: 1)
+        
         
     }
     
@@ -121,15 +135,19 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     @objc func statusButtonPressed(){
         if let statusText = statusText {
             statusTextLabel.text = statusText
+            statusTextField.resignFirstResponder()
         }
     }
     
     @objc func statusTextChanged(_ textField: UITextField) {
         statusText = textField.text
-        textField.resignFirstResponder()
+       
     }
-    
-    
+
+    @objc func tapAvatar(_ gesture: UITapGestureRecognizer){
+        guard let tapDelegate = tapAvatarViewDelegate else { return }
+        tapDelegate.tapHandler(gesture)
+    }
 }
 
 extension ProfileHeaderView: UITextFieldDelegate {
@@ -137,6 +155,9 @@ extension ProfileHeaderView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
     }
 }
 
