@@ -19,7 +19,6 @@ class PostTableViewCell: UITableViewCell {
         label.numberOfLines = 2
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.textColor = .black
-       // label.backgroundColor = .lightGray
         return label
     }()
     

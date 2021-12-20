@@ -119,15 +119,14 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }
     
     @objc func statusButtonPressed(){
-
         if let statusText = statusText {
             statusTextLabel.text = statusText
         }
     }
     
     @objc func statusTextChanged(_ textField: UITextField) {
-     
         statusText = textField.text
+        textField.resignFirstResponder()
     }
     
     

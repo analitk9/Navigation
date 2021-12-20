@@ -8,14 +8,16 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-   
+    
     fileprivate enum CellReuseID: String {
         case `default` = "TableViewCellReuseIDDefault"
         case sectionHeader = "TableViewHeaderSectionID"
+        case photoCell = "PhotoTableViewCellID"
     }
     
-    let model: [Post] = Posts.createMockData()
-        
+    let postModel: [Post] = Posts.createMockData()
+    let photoModel: [Photo] = Photos.createMockPhotos()
+    
     let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -34,17 +36,21 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .white
         title = tabBarItem.title
-      
+        
         tableView.delegate = self
         tableView.dataSource = self
         
         view.addSubview(tableView)
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: CellReuseID.default.rawValue)
         tableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: CellReuseID.sectionHeader.rawValue)
-
+        tableView.register(PhotosTableViewCell.self, forCellReuseIdentifier: CellReuseID.photoCell.rawValue)
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewWillLayoutSubviews() {
@@ -53,10 +59,10 @@ class ProfileViewController: UIViewController {
     
     func configureLayout() {
         [
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-        tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-        tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-        tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
         ].forEach { $0.isActive = true }
     }
     
@@ -75,39 +81,64 @@ extension ProfileViewController: UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
             return 220
+        }else {
+            return 0
+        }
     }
 }
 
 extension ProfileViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        1
+        2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return  model.count
+        if section == 0 {
+            return 1
+        } else {
+            return postModel.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+       
+        switch indexPath.section{
+        case 0:
+            let reUseID = CellReuseID.photoCell.rawValue
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: reUseID, for: indexPath) as? PhotosTableViewCell else { fatalError() }
+            cell.configure(with: photoModel.suffix(4))
+            return cell
+        case 1:
+            let reuseID = CellReuseID.default.rawValue
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseID, for: indexPath) as? PostTableViewCell else { fatalError() }
+            cell.configure(postModel[indexPath.row])
+            return cell
+        default:
+            return UITableViewCell()
+        }
         
-        let reuseID = CellReuseID.default.rawValue
-        guard let cell = tableView.dequeueReusableCell(withIdentifier:
-                                                        reuseID, for: indexPath) as? PostTableViewCell else { fatalError() }
-    
-        cell.configure(model[indexPath.row])
-        return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-       
-        let reuseId = CellReuseID.sectionHeader.rawValue
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier:
-                                                                    reuseId) as? ProfileHeaderView else { fatalError() }
+
         if section == 0 {
+            let reuseId = CellReuseID.sectionHeader.rawValue
+            guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier:
+                                                                        reuseId) as? ProfileHeaderView else { fatalError() }
             return view
         }
         return nil
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+             if indexPath.section == 0 {
+                 let photoVc = PhotosViewController()
+                 self.navigationController?.pushViewController(photoVc, animated: true)
+             }
+        tableView.resignFirstResponder()
     }
     
 }
